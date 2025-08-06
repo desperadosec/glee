@@ -67,6 +67,7 @@ func postToGhost(metadata map[string]interface{}, content string) {
 	if post == nil {
 		log.Info("No post found for the given slug.")
 	} else {
+        log.Info("WOOOOOOOO")
 		pid, updated_at, htmlData, featureImage = post.ID, post.UpdatedAt, post.Mobiledoc, post.FeatureImage
 	}
 	if _, ok := metadata["feature_image"]; ok {
