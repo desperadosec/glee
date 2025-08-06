@@ -142,6 +142,10 @@ func makeRequest(headers http.Header, body map[string]interface{}, pid string, u
 	ghostVersion := config.GetDefault("ghost-configuration.GHOST_VERSION", "").(string)
 	ghostUrl := config.GetDefault("ghost-configuration.GHOST_URL", "").(string)
 
+    is_page,_ := body["posts"].([]map[string]interface{})[0]["page"]
+    
+    //log.Info(body["posts"]["page"])
+
 	if ghostVersion == "v5" {
 		postsApiBase = ghostUrl + "/api/admin/posts/"
 	} else {

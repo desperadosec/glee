@@ -18,6 +18,7 @@ var buf bytes.Buffer
 
 func postToGhost(metadata map[string]interface{}, content string) {
 	injectMultiTitles(metadata)
+
 	if val, ok := metadata["code_hilite_theme"]; ok {
 		theme = val.(string)
 		log.Debug("Theme from markdown:", theme)
@@ -63,11 +64,16 @@ func postToGhost(metadata map[string]interface{}, content string) {
 		log.Error("Error: Unable to communicate with the Ghost Admin API. Please verify your Ghost configurations: %v\n", err)
 		return
 	}
+
+    is_page := metadata["page"].(bool)
+    if is_page {
+        log.Info("It's a page though")
+    }
+
 	var pid, updated_at, htmlData, featureImage string
 	if post == nil {
 		log.Info("No post found for the given slug.")
 	} else {
-        log.Info("WOOOOOOOO")
 		pid, updated_at, htmlData, featureImage = post.ID, post.UpdatedAt, post.Mobiledoc, post.FeatureImage
 	}
 	if _, ok := metadata["feature_image"]; ok {
