@@ -65,10 +65,13 @@ func postToGhost(metadata map[string]interface{}, content string) {
 		return
 	}
 
+    /*
+    FIXME: Remove this-- it doesn't matter to know here
     is_page := metadata["page"].(bool)
     if is_page {
         log.Info("It's a page though")
     }
+    */
 
 	var pid, updated_at, htmlData, featureImage string
 	if post == nil {

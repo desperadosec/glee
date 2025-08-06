@@ -28,6 +28,7 @@ type ResponseData struct {
 }
 
 var postsApiBase string
+var pagesApiBase string
 
 func getJWToken() (string, error) {
 
@@ -142,7 +143,6 @@ func makeRequest(headers http.Header, body map[string]interface{}, pid string, u
 	ghostVersion := config.GetDefault("ghost-configuration.GHOST_VERSION", "").(string)
 	ghostUrl := config.GetDefault("ghost-configuration.GHOST_URL", "").(string)
 
-    is_page,_ := body["posts"].([]map[string]interface{})[0]["page"]
     
     //log.Info(body["posts"]["page"])
 
@@ -151,7 +151,24 @@ func makeRequest(headers http.Header, body map[string]interface{}, pid string, u
 	} else {
 		postsApiBase = ghostUrl + "/api/" + ghostVersion + "/admin/posts/"
 	}
-	if pid == "" {
+
+	if ghostVersion == "v5" {
+		pagesApiBase = ghostUrl + "/api/admin/pages/"
+	} else {
+		pagesApiBase = ghostUrl + "/api/" + ghostVersion + "/admin/pages/"
+	}
+
+    is_page,_ := body["posts"].([]map[string]interface{})[0]["page"].(bool)
+
+    if is_page {
+        log.Info("Posting Page")
+		method = http.MethodPut
+		body["posts"].([]map[string]interface{})[0]["updated_at"] = updated_at
+        //slug := body["posts"].([]map[string]interface{})[0]["slug"].(string)
+
+		apiEndpoint = pagesApiBase + pid + "?source=html"
+        log.Info(apiEndpoint)
+    } else if pid == "" {
 		method = http.MethodPost
 		apiEndpoint = postsApiBase + "?source=html"
 	} else {

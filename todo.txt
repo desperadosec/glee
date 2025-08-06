@@ -1,0 +1,3 @@
+To make a pages update, we need a parallel construction of makeRequest with:
+    - separate endpoing
+    - 'pages' instead of 'posts'
